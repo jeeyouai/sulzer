@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Boas vindas</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+        #area-nome { display: none; } /* Esconde a pergunta se já souber o nome */
+    </style>
+</head>
+<body>
+
+    <h1 id="saudacao">Olá!</h1>
+
+    <div id="area-nome">
+        <p>Como gostaria de ser chamado?</p>
+        <input type="text" id="inputNome" placeholder="Seu nome...">
+        <button onclick="salvarNome()">Salvar</button>
+    </div>
+
+    <script>
+        const titulo = document.getElementById('saudacao');
+        const areaNome = document.getElementById('area-nome');
+        
+        // 1. Verifica a hora para dar Bom dia/Tarde/Noite
+        const hora = new Date().getHours();
+        let periodo = "Bom dia";
+        if (hora >= 12 && hora < 18) periodo = "Boa tarde";
+        if (hora >= 18) periodo = "Boa noite";
+
+        // 2. Tenta pegar o nome salvo no navegador
+        const nomeSalvo = localStorage.getItem('nomeUsuario');
+
+        if (nomeSalvo) {
+            // Se já tem nome, mostra a mensagem direto
+            titulo.innerText = `${periodo}, ${nomeSalvo}!`;
+        } else {
+            // Se não tem, pede o nome
+            titulo.innerText = "Bem-vindo!";
+            areaNome.style.display = 'block';
+        }
+
+        // 3. Função para salvar o nome
+        function salvarNome() {
+            const nomeDigitado = document.getElementById('inputNome').value;
+            if (nomeDigitado) {
+                localStorage.setItem('nomeUsuario', nomeDigitado);
+                location.reload(); // Recarrega a página para atualizar
+            }
+        }
+    </script>
+
+</body>
+</html>
